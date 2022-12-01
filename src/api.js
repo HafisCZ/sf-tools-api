@@ -5,7 +5,6 @@ const Script = require('../models/Script');
 const express = require('express');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
-const helmet = require('helmet');
 
 const cors = require('cors');
 const formidable = require('express-formidable');
@@ -13,7 +12,6 @@ const serverless = require('serverless-http');
 
 // Configuration
 const app = express();
-app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use(formidable());
