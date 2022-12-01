@@ -13,6 +13,10 @@ export async function handler (event, context) {
       content, multiple, key
     }).save()
 
-    return respond({ key })
+    return respond({
+      file: {
+        key
+      }
+    })
   });
 };

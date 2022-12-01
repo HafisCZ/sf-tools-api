@@ -13,6 +13,10 @@ export async function handler (event, context) {
       file.remove()
     }
 
-    return respond({ content: content })
+    return respond({
+      file: {
+        content
+      }
+    })
   });
 };
