@@ -6,16 +6,16 @@ export async function handler (event, context) {
 
     try {
       const file = await Entry.findOne({ key }).exec();
-      if (!file) throw 'err';
+      if (!file) throw 'File does not exist';
 
-      const body = file.content;
+      const content = file.content;
       if (!file.multiple) {
         file.remove();
       }
 
-      return respond(body);
+      return respond({ content: content });
     } catch (e) {
-      return respond('');
+      return respond({ error: e.message });
     }
   });
 };

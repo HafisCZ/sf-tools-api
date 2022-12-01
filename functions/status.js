@@ -21,7 +21,7 @@ export async function handler (event, context) {
         }
       });
     } catch (e) {
-      return respond({});
+      return respond({ error: e.message });
     }
   });
 };
