@@ -9,9 +9,11 @@ export async function handler (event, context) {
     const { content, multiple } = JSON.parse(event.body)
     const key = await randomUUID(Entry)
 
-    new Entry({
+    const file = new Entry({
       content, multiple, key
-    }).save()
+    })
+    
+    await file.save()
 
     return respond({
       file: {

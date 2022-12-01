@@ -10,9 +10,11 @@ export async function handler (event, context) {
     const key = await randomUUID(Script)
     const secret = generateRandomUUID()
 
-    new Script({
+    const script = new Script({
       content, author, description, key, secret, private: true
-    }).save()
+    })
+    
+    await script.save()
 
     return respond({
       script: {
