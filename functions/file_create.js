@@ -7,7 +7,7 @@ export async function handler (event, context) {
 
   return await wrap(context, async () => {
     const { content, multiple } = JSON.parse(event.body)
-    const key = randomUUID(Entry)
+    const key = await randomUUID(Entry)
 
     new Entry({
       content, multiple, key

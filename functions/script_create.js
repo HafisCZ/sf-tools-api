@@ -7,7 +7,7 @@ export async function handler (event, context) {
 
   return await wrap(context, async () => {
     const { content, author, description } = JSON.parse(event.body)
-    const key = randomUUID(Script)
+    const key = await randomUUID(Script)
     const secret = generateRandomUUID()
 
     new Script({
