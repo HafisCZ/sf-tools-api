@@ -1,4 +1,4 @@
-const { Entry, withDatabase, respond } = require('./../shared');
+const { Entry, withDatabase, respond } = require('./shared/shared');
 
 module.exports.handler = async (event, context) => {
   return await withDatabase(context, async () => {

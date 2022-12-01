@@ -1,5 +1,5 @@
-const Entry = require('./models/Entry');
-const Script = require('./models/Script');
+const Entry = require('./Entry');
+const Script = require('./Script');
 const mongoose = require('mongoose');
 
 const withDatabase = (context, callback) => {
