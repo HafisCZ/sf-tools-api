@@ -1,9 +1,7 @@
-const { Entry, connectToDatabase } = require('./../shared');
+const { Entry, withDatabase } = require('./../shared');
 
 module.exports.handler = async (event, context) => {
-  context.callbackWaitsForEmptyEventLoop = false;
-
-  await connectToDatabase();
+  await withDatabase(context);
 
   const key = event.queryStringParameters.key;
 
@@ -13,13 +11,15 @@ module.exports.handler = async (event, context) => {
       throw 'err';
     }
 
+    const content = file.content;
+
     if (!file.multiple) {
       file.remove();
     }
 
     return {
       statusCode: 200,
-      body: file.content
+      body: content
     }
   } catch (e) {
     return {
