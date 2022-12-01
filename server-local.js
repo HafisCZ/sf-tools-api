@@ -1,6 +1,6 @@
 'use strict';
 
-const app = require('./src/server');
+const app = require('./express/server');
 
 const dotenv = require('dotenv');
 dotenv.config();
