@@ -5,7 +5,7 @@
   "main": "functions/server.js",
   "scripts": {
     "build": "netlify-lambda build express",
-    "start": "nodemon server-local.js"
+    "start": "netlify-lambda serve express"
   },
   "repository": {
     "type": "git",
@@ -26,7 +26,6 @@
     "formidable": "^3.2.5",
     "mongoose": "^6.7.5",
     "netlify-lambda": "^2.0.15",
-    "nodemon": "^2.0.20",
     "serverless-http": "^3.1.0"
   }
 }

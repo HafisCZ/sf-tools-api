@@ -1,16 +1,14 @@
-'use strict';
+'use strict';  
 
-const { getRandomKey } = require('./helpers')
-const Entry = require('./models/Entry');
-const Script = require('./models/Script');
+import Entry from './models/Entry';
+import Script from './models/Script';
 
-const express = require('express');
-const serverless = require('serverless-http');
-const dotenv = require('dotenv');
-const mongoose = require('mongoose');
-
-const cors = require('cors');
-const formidable = require('express-formidable');
+import express from 'express';
+import serverless from 'serverless-http';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import formidable from 'express-formidable';
 
 // Configuration
 const app = express();
@@ -30,6 +28,17 @@ mongoose.connect(process.env.DB_CONNECTION_STRING, {
 });
 
 const router = express.Router();
+
+function getRandomKey () {
+    let _sym = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let str = '';
+
+    for (var i = 0; i < 12; i++) {
+        str += _sym[parseInt(Math.random() * _sym.length)];
+    }
+
+    return str;
+}
 
 router.post('/scripts/share', async (req, res) => {
   // Share single script
