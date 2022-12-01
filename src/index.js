@@ -8,7 +8,6 @@ const mongoose = require('mongoose');
 
 const cors = require('cors');
 const formidable = require('express-formidable');
-const serverless = require('serverless-http');
 
 // Configuration
 const app = express();
@@ -224,6 +223,9 @@ router.get('/files/', async (req, res) => {
     }
 })
 
-app.use('/.netlify/functions/api', router);
+app.use('/api/', router);
 
-module.exports.handler = serverless(app);
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log('Server up and running');
+});
