@@ -1,6 +1,6 @@
-const { Entry, withDatabase, respond } = require('../lib/shared');
+import { Entry, Script, withDatabase, respond } from './../lib/shared'
 
-module.exports.handler = async (event, context) => {
+export async function handler (event, context) {
   return await withDatabase(context, async () => {
     const key = event.queryStringParameters.key;
 

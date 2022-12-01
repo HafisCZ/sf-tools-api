@@ -1,27 +1,27 @@
-const { Entry, Script, withDatabase, respond } = require('../lib/shared');
+import { Entry, Script, withDatabase, respond } from './../lib/shared'
 
-module.exports.handler = async (event, context) => {
+export async function handler (event, context) {
   return await withDatabase(context, async () => {
     try {
-      const total = await Entry.countDocuments();
-      const multipleuse = await Entry.countDocuments({ multiple: true });
-      const totals = await Script.countDocuments();
-      const private = await Script.countDocuments({ private: true });
+      const file_total = await Entry.countDocuments();
+      const file_multiple = await Entry.countDocuments({ multiple: true });
+      const script_total = await Script.countDocuments();
+      const script_private = await Script.countDocuments({ private: true });
 
       return respond({
         files: {
-          count: total,
-          singleUseOnly: total - multipleuse,
-          expireOnly: multipleuse,
+          count: file_total,
+          single_use: file_total - file_multiple,
+          expire_use: file_multiple,
         },
         scripts: {
-            count: totals,
-            privateScripts: private,
-            publicScripts: totals - private
+            count: script_total,
+            private: script_private,
+            public: script_total - script_private
         }
       });
     } catch (e) {
-      return respond({ total: -1 });
+      return respond({});
     }
   });
 };
