@@ -1,8 +1,11 @@
+'use strict';
+
 const { getRandomKey } = require('./helpers')
-const Entry = require('../models/Entry');
-const Script = require('../models/Script');
+const Entry = require('./models/Entry');
+const Script = require('./models/Script');
 
 const express = require('express');
+const serverless = require('serverless-http');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 
@@ -223,9 +226,7 @@ router.get('/files/', async (req, res) => {
     }
 })
 
-app.use('/api/', router);
+app.use('/.netlify/functions/server', router);
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log('Server up and running');
-});
+module.exports = app;
+module.exports.handler = serverless(app);
