@@ -1,6 +1,6 @@
 const { getRandomKey } = require('./helpers')
-const Entry = require('./../models/Entry');
-const Script = require('./../models/Script');
+const Entry = require('../models/Entry');
+const Script = require('../models/Script');
 
 const express = require('express');
 const dotenv = require('dotenv');
@@ -9,6 +9,7 @@ const helmet = require('helmet');
 
 const cors = require('cors');
 const formidable = require('express-formidable');
+const serverless = require('serverless-http');
 
 // Configuration
 const app = express();
@@ -28,10 +29,9 @@ mongoose.connect(process.env.DB_CONNECTION_STRING, {
   console.log('Connected to DB');
 });
 
-const port = process.env.PORT || 3000;
+const router = express.Router();
 
-// Routes
-app.post('/scripts/share', async (req, res) => {
+router.post('/scripts/share', async (req, res) => {
   // Share single script
   let content = req.fields.content;
   let author = req.fields.author;
@@ -60,7 +60,7 @@ app.post('/scripts/share', async (req, res) => {
 
       const savedScript = await script.save();
 
-      res.send({
+      res.json({
           success: true,
           key: key,
           secret: secret,
@@ -70,13 +70,13 @@ app.post('/scripts/share', async (req, res) => {
           private: private
       });
   } catch (err) {
-      res.status(400).send({
+      res.json({
           success: false
       });
   }
 });
 
-app.post('/scripts/update', async (req, res) => {
+router.post('/scripts/update', async (req, res) => {
   // Update shared script
   let content = req.fields.content;
   let key = req.fields.key;
@@ -96,7 +96,7 @@ app.post('/scripts/update', async (req, res) => {
 
           await entry.save();
 
-          res.send({
+          res.json({
               success: true,
               key: entry.key,
               secret: entry.secret,
@@ -109,13 +109,13 @@ app.post('/scripts/update', async (req, res) => {
           throw 'err';
       }
   } catch (err) {
-      res.status(400).send({
+      res.json({
           success: false
       });
   }
 });
 
-app.get('/scripts/delete', async (req, res) => {
+router.get('/scripts/delete', async (req, res) => {
   // Delete shared script
   let id = req.query.key;
   let secret = req.query.secret;
@@ -128,24 +128,24 @@ app.get('/scripts/delete', async (req, res) => {
           throw 'err';
       }
 
-      res.send({
+      res.json({
           success: true
       });
   } catch (err) {
-      res.status(400).send({
+      res.json({
           success: false
       });
   }
 });
 
-app.get('/scripts/', async (req, res) => {
+router.get('/scripts/', async (req, res) => {
   // List available scripts or send selected one
   let id = req.query.key;
 
   if (id) {
       try {
           let entry = await Script.findOne({ key: id }).exec();
-          res.send({
+          res.json({
               success: true,
               content: entry.content,
               date: entry.date,
@@ -154,14 +154,14 @@ app.get('/scripts/', async (req, res) => {
               private: entry.private
           });
       } catch (err) {
-          res.status(400).send({
+          res.json({
               success: false
           });
       }
   } else {
       try {
           let entries = await Script.find({ private: { $ne: true } }, 'key author date description');
-          res.send(entries.map(entry => {
+          res.json(entries.map(entry => {
               return {
                   author: entry.author,
                   key: entry.key,
@@ -170,63 +170,63 @@ app.get('/scripts/', async (req, res) => {
               };
           }));
       } catch (err) {
-          res.status(400).send({
+          res.json({
               success: false
           });
       }
   }
 });
 
-app.post('/files/share', async (req, res) => {
-  const entry = new Entry({
-      content: req.fields.file,
-      multiple: req.fields.multiple
-  });
+router.post('/files/share', async (req, res) => {
+    const file = new Entry({
+        content: req.fields.file,
+        multiple: req.fields.multiple
+    });
 
-  let key = null;
+    let key = null;
 
-  try {
-      while (key == null) {
-          let k = getRandomKey();
-          if (!await Entry.exists({ key: k })) {
-              key = k;
-          }
-      }
+    try {
+        while (key == null) {
+            let k = getRandomKey();
+            if (!await Entry.exists({ key: k })) {
+                key = k;
+            }
+        }
+  
+        file.key = key;
+        
+        await file.save();
+  
+        res.json({
+            success: true,
+            key: key
+        });
+    } catch (err) {
+        res.json({
+            success: false
+        });
+    }
+})
 
-      entry.key = key;
-      const savedEntry = await entry.save();
+router.get('/files/', async (req, res) => {
+    const fileId = req.query.key;
 
-      res.send({
-          success: true,
-          key: key
-      });
-  } catch (err) {
-      res.status(400).send({
-          success: false
-      });
-  }
-});
+    try {
+        const file = await Entry.findOne({ key: fileId }).exec();
+        if (!file) {
+            throw 'err';
+        }
 
-app.get('/files/', async (req, res) => {
-  let id = req.query.key;
+        res.send(file.content);
 
-  try {
-      let entry = await Entry.findOne({ key: id }).exec();
-      if (entry) {
-          res.send(entry.content);
+        if (!file.multiple) {
+            file.remove();
+        }
+    } catch (err) {
+        res.send('');
+    }
+})
 
-          if (!entry.multiple) {
-              entry.remove();
-          }
-      } else {
-          res.send('');
-      }
-  } catch (err) {
-      res.send('');
-  }
-});
+app.use('/.netlify/functions/api', router);
 
-// Listener
-app.listen(port, () => {
-  console.log('Server up and running');
-});
+module.exports.handler = serverless(app);

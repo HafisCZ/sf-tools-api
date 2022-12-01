@@ -2,9 +2,10 @@
   "name": "sf-tools-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "api.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "./node_modules/.bin/netlify-lambda serve src",
+    "build": "./node_modules/.bin/netlify-lambda build src"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,8 @@
     "express-formidable": "^1.2.0",
     "formidable": "^3.2.5",
     "helmet": "^6.0.1",
-    "mongoose": "^6.7.5"
+    "mongoose": "^6.7.5",
+    "netlify-lambda": "^2.0.15",
+    "serverless-http": "^3.1.0"
   }
 }
