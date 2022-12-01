@@ -36,7 +36,6 @@ router.post('/scripts/share', async (req, res) => {
   let content = req.fields.content;
   let author = req.fields.author;
   let description = req.fields.description;
-  let private = true;
 
   let secret = getRandomKey();
   let key = null;
@@ -55,7 +54,7 @@ router.post('/scripts/share', async (req, res) => {
           key: key,
           description: description,
           secret: secret,
-          private: private
+          private: true
       });
 
       const savedScript = await script.save();
@@ -67,7 +66,7 @@ router.post('/scripts/share', async (req, res) => {
           description: description,
           content: content,
           author: author,
-          private: private
+          private: true
       });
   } catch (err) {
       res.json({
