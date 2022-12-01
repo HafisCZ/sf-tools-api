@@ -1,4 +1,4 @@
-import { Entry, withDatabase, randomUUID, respond } from '../../lib/shared'
+import { Entry, withDatabase, randomUUID, respond } from '../lib/shared'
 
 export async function handler (event, context) {
   return await withDatabase(context, async () => {

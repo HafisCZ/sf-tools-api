@@ -4,6 +4,7 @@
 [functions]
   node_bundler = "esbuild"
   included_files = ["lib/**"]
+  external_node_modules = ["mongodb"]
 
 [[redirects]]
   from = "/api/*"
