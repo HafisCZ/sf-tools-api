@@ -1,30 +1,21 @@
-const { Entry, withDatabase } = require('./../shared');
+const { Entry, withDatabase, respond } = require('./../shared');
 
 module.exports.handler = async (event, context) => {
-  await withDatabase(context);
+  return await withDatabase(context, async () => {
+    const key = event.queryStringParameters.key;
 
-  const key = event.queryStringParameters.key;
+    try {
+      const file = await Entry.findOne({ key }).exec();
+      if (!file) throw 'err';
 
-  try {
-    const file = await Entry.findOne({ key }).exec();
-    if (!entry) {
-      throw 'err';
+      const body = file.content;
+      if (!file.multiple) {
+        file.remove();
+      }
+
+      return respond(body);
+    } catch (e) {
+      return respond('');
     }
-
-    const content = file.content;
-
-    if (!file.multiple) {
-      file.remove();
-    }
-
-    return {
-      statusCode: 200,
-      body: content
-    }
-  } catch (e) {
-    return {
-      statusCode: 200,
-      body: ''
-    }
-  }
+  });
 };
