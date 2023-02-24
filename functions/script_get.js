@@ -14,7 +14,8 @@ export async function handler (event, context) {
         date: script.date,
         author: script.author,
         description: script.description,
-        private: script.private
+        private: script.private,
+        version: script.version
       }
     })
   });

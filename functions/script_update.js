@@ -6,11 +6,15 @@ export async function handler (event, context) {
   }
 
   return await wrap(context, async () => {
-    const { content, key, secret, author, description } = JSON.parse(event.body)
+    const { content, key, secret, author, version, description } = JSON.parse(event.body)
 
     const script = await Script.findOne({ key }).exec()
     if (!script || script.secret != secret) {
       return respond({ error: 'Script does not exist or secret key is not valid' })
+    }
+
+    if (version) {
+      script.version = version
     }
 
     if (content) {
@@ -34,6 +38,7 @@ export async function handler (event, context) {
         content,
         author,
         description,
+        version,
         private: true
       }
     })
