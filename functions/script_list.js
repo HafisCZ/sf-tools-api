@@ -10,7 +10,8 @@ export async function handler (event, context) {
         key: script.key,
         date: script.date,
         description: script.description,
-        version: script.version
+        version: script.version,
+        uses: script.uses
       }))
     })
   })
