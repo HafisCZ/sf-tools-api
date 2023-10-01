@@ -39,7 +39,8 @@ export async function handler (event, context) {
         author,
         description,
         version,
-        private: true
+        private: true,
+        uses: 0
       }
     })
   });
