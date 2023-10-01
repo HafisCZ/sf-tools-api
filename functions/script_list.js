@@ -2,7 +2,7 @@ import { Script, wrap, respond } from '../lib/shared'
 
 export async function handler (event, context) {
   return await wrap(context, async () => {
-    const scripts = await Script.find({ private: { $ne: true } }, 'key author date description version');
+    const scripts = await Script.find({ private: { $ne: true } }, 'key author date description version uses');
 
     return respond({
       scripts: scripts.map(script => ({
