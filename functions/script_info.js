@@ -1,4 +1,4 @@
-import { Script, wrap, respond } from '../lib/shared'
+import { Script, wrap, respond, pickFields } from '../lib/shared'
 
 export async function handler (event, context) {
   return await wrap(context, async () => {
@@ -11,19 +11,7 @@ export async function handler (event, context) {
     }
 
     return respond({
-      script: {
-        key: script.key,
-        secret: script.secret,
-        content: script.content,
-        created_at: script.created_at,
-        updated_at: script.updated_at,
-        author: script.author,
-        name: script.name,
-        description: script.description,
-        private: script.private,
-        version: script.version,
-        uses: script.uses
-      }
+      script: pickFields(script, ['key', 'secret', 'content', 'created_at', 'updated_at', 'author', 'name', 'description', 'private', 'version', 'uses'])
     })
   });
 };

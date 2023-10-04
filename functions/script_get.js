@@ -9,17 +9,7 @@ export async function handler (event, context) {
     }
 
     return respond({
-      script: {
-        key: script.key,
-        content: script.content,
-        created_at: script.created_at,
-        updated_at: script.updated_at,
-        author: script.author,
-        name: script.name,
-        description: script.description,
-        private: script.private,
-        version: script.version
-      }
+      script: pickFields(script, ['key', 'content', 'created_at', 'updated_at', 'author', 'name', 'description', 'private', 'version'])
     })
   });
 };
