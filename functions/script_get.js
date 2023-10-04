@@ -1,4 +1,4 @@
-import { Script, wrap, respond } from '../lib/shared'
+import { Script, wrap, respond, pickFields } from '../lib/shared'
 
 export async function handler (event, context) {
   return await wrap(context, async () => {

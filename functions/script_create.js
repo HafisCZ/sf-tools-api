@@ -1,4 +1,4 @@
-import { Script, wrap, randomUUID, respond, generateRandomUUID } from '../lib/shared'
+import { Script, wrap, randomUUID, respond, generateRandomUUID, pickFields } from '../lib/shared'
 
 export async function handler (event, context) {
   if (!event.body) {
