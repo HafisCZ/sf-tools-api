@@ -10,8 +10,10 @@ export async function handler (event, context) {
 
     return respond({
       script: {
+        key: script.key,
         content: script.content,
-        date: script.date,
+        created_at: script.created_at,
+        updated_at: script.updated_at,
         author: script.author,
         description: script.description,
         private: script.private,

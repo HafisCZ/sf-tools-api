@@ -29,6 +29,8 @@ export async function handler (event, context) {
       script.author = author
     }
 
+    script.updated_at = Date.now()
+
     await script.save()
 
     return respond({
