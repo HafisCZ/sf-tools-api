@@ -18,6 +18,7 @@ export async function handler (event, context) {
         created_at: script.created_at,
         updated_at: script.updated_at,
         author: script.author,
+        name: script.name,
         description: script.description,
         private: script.private,
         version: script.version,
