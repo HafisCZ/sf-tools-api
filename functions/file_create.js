@@ -1,4 +1,4 @@
-import { Entry, wrap, randomUUID, respond } from '../lib/shared'
+import { File, wrap, randomUUID, respond } from '../lib/shared'
 
 export async function handler (event, context) {
   if (!event.body) {
@@ -7,9 +7,9 @@ export async function handler (event, context) {
 
   return await wrap(context, async () => {
     const { content, multiple } = JSON.parse(event.body)
-    const key = await randomUUID(Entry)
+    const key = await randomUUID(File)
 
-    const file = new Entry({
+    const file = new File({
       content, multiple, key
     })
     

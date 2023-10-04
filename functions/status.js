@@ -1,9 +1,9 @@
-import { Entry, Script, wrap, respond } from './../lib/shared'
+import { File, Script, wrap, respond } from './../lib/shared'
 
 export async function handler (event, context) {
   return await wrap(context, async () => {
-    const file_total = await Entry.countDocuments()
-    const file_multiple = await Entry.countDocuments({ multiple: true })
+    const file_total = await File.countDocuments()
+    const file_multiple = await File.countDocuments({ multiple: true })
     const script_total = await Script.countDocuments()
     const script_private = await Script.countDocuments({ private: true })
 

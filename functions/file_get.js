@@ -1,9 +1,9 @@
-import { Entry, wrap, respond } from '../lib/shared'
+import { File, wrap, respond } from '../lib/shared'
 
 export async function handler (event, context) {
   return await wrap(context, async () => {
     const key = event.queryStringParameters.key
-    const file = await Entry.findOne({ key }).exec()
+    const file = await File.findOne({ key }).exec()
     if (!file) {
       return respond({ error: 'File does not exist' })
     }
