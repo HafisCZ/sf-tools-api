@@ -6,12 +6,18 @@ export async function handler (event, context) {
     const secret = event.queryStringParameters.secret
 
     const script = await Script.findOne({ key }).exec()
-    if (!script || script.secret != secret) {
-      return respond({ error: 'Script does not exist or secret key is not valid' })
+    if (!script) {
+      return respond({ error: 'Script does not exist' })
     }
 
+    const fields = script.secret === secret ? [
+      'key', 'secret', 'created_at', 'updated_at', 'author', 'name', 'description', 'private', 'version', 'uses'
+    ] : [
+      'key', 'created_at', 'updated_at', 'author', 'name', 'description', 'private', 'version'
+    ]
+
     return respond({
-      script: pickFields(script, ['key', 'secret', 'content', 'created_at', 'updated_at', 'author', 'name', 'description', 'private', 'version', 'uses'])
+      script: pickFields(script, fields)
     })
   });
 };
