@@ -4,10 +4,10 @@ export async function handler (event, context) {
   return await wrap(context, async () => {
     const includeKeys = event.queryStringParameters.include?.split(',')
 
-    const scripts = await Script.find({ $or: [{ private: { $ne: true } }, { key: { $in: includeKeys } }] }, 'key author created_at updated_at name description version private');
+    const scripts = await Script.find({ $or: [{ private: { $ne: true } }, { key: { $in: includeKeys } }] }, 'key author created_at updated_at name description version private uses');
 
     return respond({
-      scripts: scripts.map((script) => pickFields(script, ['author', 'key', 'created_at', 'updated_at', 'name',  'description', 'version', 'private']))
+      scripts: scripts.map((script) => pickFields(script, ['author', 'key', 'created_at', 'updated_at', 'name',  'description', 'version', 'private', 'uses']))
     })
   })
 }

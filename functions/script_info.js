@@ -13,7 +13,7 @@ export async function handler (event, context) {
     const fields = script.secret === secret ? [
       'key', 'secret', 'created_at', 'updated_at', 'author', 'name', 'description', 'private', 'version', 'uses'
     ] : [
-      'key', 'created_at', 'updated_at', 'author', 'name', 'description', 'private', 'version'
+      'key', 'created_at', 'updated_at', 'author', 'name', 'description', 'private', 'version', 'uses'
     ]
 
     return respond({
