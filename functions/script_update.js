@@ -6,7 +6,7 @@ export async function handler (event, context) {
   }
 
   return await wrap(context, async () => {
-    const { content, key, secret, author, version, name, description } = JSON.parse(event.body)
+    const { content, key, secret, author, version, name, description, visibility } = JSON.parse(event.body)
 
     const script = await Script.findOne({ key }).exec()
     if (!script || script.secret != secret) {
@@ -31,6 +31,10 @@ export async function handler (event, context) {
 
     if (author) {
       script.author = author
+    }
+
+    if (visibility) {
+      script.visibility = visibility
     }
 
     script.updated_at = Date.now()
