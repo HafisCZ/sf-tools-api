@@ -1,4 +1,4 @@
-import { Script, wrap, respond, pickFields } from '../lib/shared'
+import { Script, wrap, respond, pickFields, sendWebhook } from '../lib/shared'
 
 export async function handler (event, context) {
   if (!event.body) {
