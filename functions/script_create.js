@@ -12,13 +12,13 @@ export async function handler (event, context) {
     const secret = generateRandomUUID()
 
     const script = new Script({
-      content, author, name, description, key, secret, version, private: true
+      content, author, name, description, key, secret, version, visibility
     })
     
     await script.save()
 
     return respond({
-      script: pickFields(script, ['key', 'secret', 'content', 'created_at', 'updated_at', 'author', 'name', 'description', 'private', 'version', 'uses'])
+      script: pickFields(script, ['key', 'secret', 'content', 'created_at', 'updated_at', 'author', 'name', 'description', 'visibility', 'verified', 'version', 'uses'])
     })
   });
 };

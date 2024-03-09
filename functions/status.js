@@ -5,7 +5,9 @@ export async function handler (event, context) {
     const file_total = await File.countDocuments()
     const file_multiple = await File.countDocuments({ multiple: true })
     const script_total = await Script.countDocuments()
-    const script_private = await Script.countDocuments({ private: true })
+    const script_private = await Script.countDocuments({ visibility: 'private' })
+    const script_public = await Script.countDocuments({ visibility: 'public' })
+    const script_verified = await Script.countDocuments({ verified: true })
 
     return respond({
       files: {
@@ -16,7 +18,8 @@ export async function handler (event, context) {
       scripts: {
           count: script_total,
           private: script_private,
-          public: script_total - script_private
+          public: script_public,
+          verified: script_verified
       }
     })
   })
