@@ -35,6 +35,10 @@ export async function handler (event, context) {
 
     if (visibility) {
       script.visibility = visibility
+
+      if (visibility === 'public' && !script.verified) {
+        sendWebhook(`[${key}] Request for verification`)
+      }
     }
 
     script.updated_at = Date.now()
