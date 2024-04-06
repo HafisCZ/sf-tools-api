@@ -37,7 +37,12 @@ export async function handler (event, context) {
       script.visibility = visibility
 
       if (visibility === 'public' && !script.verified) {
-        sendWebhook(`[${key}] Request for verification`)
+        sendWebhook(
+          process.env.VERIFICATION_WEBHOOK_URL,
+          {
+            content: `[${key}] Request for verification`
+          }
+        )
       }
     }
 
