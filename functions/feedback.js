@@ -8,7 +8,7 @@ export async function handler (event, context) {
   return await wrap(context, async () => {
     const { tool, type, email, description } = JSON.parse(event.body)
 
-    sendWebhook(
+    await sendWebhook(
       process.env.FEEDBACK_WEBHOOK_URL,
       {
         embeds: [{
@@ -28,7 +28,7 @@ export async function handler (event, context) {
             {
               name: 'description',
               value: description
-            },
+            }
           ]
         }]
       }
